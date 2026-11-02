@@ -127,25 +127,26 @@ public final class JsynAudio {
     }
     /** Task 6: route the reader through the band-stop filter and return its output port. */
     private static UnitOutputPort connectBandStop(FixedRateMonoReader reader, FilterBandStop filter) {
-        // TODO (Task 6): connect the reader to the filter and return the filtered output.
-        throw new UnsupportedOperationException("TODO (Task 6)");
+        reader.output.connect(filter.input);
+        return filter.output;
     }
 
     /** Task 6: apply common attenuation before the playback/recording split. */
     private static void connectOutputGain(UnitOutputPort filtered, Multiply gain, double outputGain) {
-        // TODO (Task 6): connect the filtered signal and set the multiplier's other input.
-        throw new UnsupportedOperationException("TODO (Task 6)");
+        filtered.connect(gain.inputA);
+        gain.inputB.set(outputGain);
     }
 
     /** Task 6: route the mono result to both speaker channels. */
     private static void connectSpeakers(Multiply gain, LineOut speakers) {
-        // TODO (Task 6): connect the attenuated output to left and right channels.
-        throw new UnsupportedOperationException("TODO (Task 6)");
+        gain.output.connect(0, speakers.input, 0);
+        gain.output.connect(0, speakers.input, 1);
     }
 
     /** Task 6: record the same attenuated output that feeds the speakers. */
     private static void connectRecorder(Multiply gain, WaveRecorder recorder) {
-        // TODO (Task 6): connect the attenuated output to the recorder input.
-        throw new UnsupportedOperationException("TODO (Task 6)");
+        gain.output.connect(recorder.getInput()); 
     }
+
 }
+
